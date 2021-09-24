@@ -21,7 +21,7 @@ variables:
 
 stages:
 - stage: Build
-  displayName: Build and push stage
+  displayName: Build, scan and push stage
   jobs:
   - job: Build
     displayName: Build
@@ -29,17 +29,21 @@ stages:
       vmImage: $(vmImageName)
     steps:
     - task: Docker@2
-      displayName: Build and push an image to container registry
+      displayName: Build image
       inputs:
-        command: buildAndPush
-        repository: $(imageRepository)
+        command: build
+        repository: $(containerRegistry)/$(Build.Repository.Name)
         dockerfile: $(dockerfilePath)
-        containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
-    - task: CmdLine@2
+    - task: prisma-cloud-compute-scan@3
       inputs:
-        script: |
-          curl -s -k -u $(PC_ACCESS_KEY):$(PC_SECRET_KEY) "https://$(PC_CONSOLE)/api/v1/util/twistcli" -v -o twistcli
-          chmod +x twistcli
-          ./twistcli images scan --user $(PC_ACCESS_KEY) --password $(PC_SECRET_KEY) --address https://$(PC_CONSOLE) --details $(containerRegistry)/$(imageRepository):$(tag)
+        scanType: 'images'
+        twistlockService: 'Self-Hosted AWS'
+        artifact: '$(containerRegistry)/$(Build.Repository.Name):$(tag)'
+    - task: Docker@2
+      displayName: Push image to the Registry
+      inputs:
+        containerRegistry: $(imageRepository)
+        repository: $(Build.Repository.Name)
+        command: 'push'
