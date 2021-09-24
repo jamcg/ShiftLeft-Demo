@@ -39,7 +39,7 @@ stages:
     - task: prisma-cloud-compute-scan@3
       inputs:
         scanType: 'images'
-        twistlockService: 'Self-Hosted AWS'
+        twistlockService: 'Prisma-Cloud-Compute-US-Demo'
         artifact: '$(imageRepository):$(tag)'
     - task: Docker@2
       displayName: Push image to the Registry
