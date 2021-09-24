@@ -11,7 +11,7 @@ resources:
 variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'dff39779-118e-4491-97f5-7ea5df0dddc7'
-  imageRepository: 'jamcgshiftleftdemo'
+  #imageRepository: 'jamcgshiftleftdemo'
   containerRegistry: 'azlab789w6345k.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/dockerfile'
   tag: '$(Build.BuildId)'
