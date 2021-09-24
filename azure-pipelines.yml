@@ -11,7 +11,7 @@ resources:
 variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'dff39779-118e-4491-97f5-7ea5df0dddc7'
-  #imageRepository: 'jamcgshiftleftdemo'
+  imageRepository: 'jamcgshiftleftdemo'
   containerRegistry: 'azlab789w6345k.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/dockerfile'
   tag: '$(Build.BuildId)'
@@ -32,7 +32,7 @@ stages:
       displayName: Build image
       inputs:
         command: build
-        repository: $(containerRegistry)/$(Build.Repository.Name)
+        repository: $(imageRepository)
         dockerfile: $(dockerfilePath)
         tags: |
           $(tag)
@@ -40,10 +40,10 @@ stages:
       inputs:
         scanType: 'images'
         twistlockService: 'Self-Hosted AWS'
-        artifact: '$(containerRegistry)/$(Build.Repository.Name):$(tag)'
+        artifact: '$(containerRegistry)/$(imageRepository):$(tag)'
     - task: Docker@2
       displayName: Push image to the Registry
       inputs:
         containerRegistry: $(dockerRegistryServiceConnection)
-        repository: $(Build.Repository.Name)
+        repository: $(imageRepository)
         command: 'push'
