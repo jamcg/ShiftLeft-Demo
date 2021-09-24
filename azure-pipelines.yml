@@ -32,7 +32,7 @@ stages:
       displayName: Build image
       inputs:
         command: build
-        repository: $(imageRepository)
+        repository: azlab789w6345k.azurecr.io/$(imageRepository)
         dockerfile: $(dockerfilePath)
         tags: |
           $(tag)
@@ -40,7 +40,7 @@ stages:
       inputs:
         scanType: 'images'
         twistlockService: 'Prisma-Cloud-Compute-US-Demo'
-        artifact: '$(imageRepository):$(tag)'
+        artifact: 'azlab789w6345k.azurecr.io/$(imageRepository):$(tag)'
     - task: Docker@2
       displayName: Push image to the Registry
       inputs:
