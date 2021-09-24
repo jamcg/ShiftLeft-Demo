@@ -40,7 +40,7 @@ stages:
       inputs:
         scanType: 'images'
         twistlockService: 'Self-Hosted AWS'
-        artifact: '$(containerRegistry)/$(imageRepository):$(tag)'
+        artifact: '$(imageRepository):$(tag)'
     - task: Docker@2
       displayName: Push image to the Registry
       inputs:
